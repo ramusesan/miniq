@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MiniQ Documentation</title>
+    <!-- Prism CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+            border-left: 5px solid #0066cc;
+        }
+        
+        nav {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+        }
+        
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        nav a {
+            text-decoration: none;
+            color: #0066cc;
+            font-weight: 500;
+        }
+        
+        section {
+            margin-bottom: 40px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 20px;
+        }
+        
+        h1 {
+            color: #0066cc;
+        }
+        
+        h2 {
+            color: #0066cc;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 10px;
+            margin-top: 40px;
+        }
+        
+        h3 {
+            color: #444;
+            margin-top: 25px;
+        }
+        
+        code {
+            font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+            background-color: #f5f5f5;
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+        
+        pre {
+            padding: 0;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 15px 0;
+            background: none;
+        }
+        
+        pre code {
+            background-color: transparent;
+            padding: 0;
+        }
+        
+        /* Prism overrides */
+        :not(pre) > code[class*="language-"],
+        pre[class*="language-"] {
+            background: #2d2d2d;
+            border-radius: 5px;
+        }
+        
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 20px 0;
+        }
+        
+        th, td {
+            text-align: left;
+            padding: 12px 15px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        th {
+            background-color: #f2f2f2;
+        }
+        
+        .method-signature {
+            font-weight: bold;
+            color: #0066cc;
+        }
+        
+        .example-container {
+            background-color: #f8f9fa;
+            border-left: 4px solid #0066cc;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+        }
+        
+        .note {
+            background-color: #fff8dc;
+            border-left: 4px solid #ffeb3b;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+        }
+        
+        .warning {
+            background-color: #fff5f5;
+            border-left: 4px solid #f44336;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+        }
+        
+        footer {
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            text-align: center;
+            color: #666;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            nav ul {
+                flex-direction: column;
+                gap: 5px;
+            }
+            
+            body {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>MiniQ Documentation</h1>
+        <p>A lightweight JavaScript library for DOM manipulation with a jQuery-like API</p>
+        <p><small>Version 1.0.0</small></p>
+    </header>
+    
+    <nav>
+        <ul>
+            <li><a href="#getting-started">Getting Started</a></li>
+            <li><a href="#core-concepts">Core Concepts</a></li>
+            <li><a href="#api-reference">API Reference</a></li>
+            <li><a href="#extending">Extending MiniQ</a></li>
+            <li><a href="#examples">Examples</a></li>
+        </ul>
+    </nav>
+    
+    <section id="getting-started">
+        <h2>Getting Started</h2>
+        
+        <h3>Installation</h3>
+        <p>Include the MiniQ library in your HTML file:</p>
+        <pre><code class="language-html">&lt;script src="miniq.js"&gt;&lt;/script&gt;</code></pre>
+        
+        <h3>Basic Usage</h3>
+        <p>Use the <code>MQ()</code> function to select elements and perform operations:</p>
+        
+        <pre><code class="language-javascript">// Select elements by CSS selector
+MQ('.my-class').addClass('active');
+
+// Chain methods
+MQ('#my-element')
+  .css('color', 'blue')
+  .html('New content')
+  .on('click', function() {
+    alert('Element clicked!');
+  });</code></pre>
+    </section>
+    
+    <section id="core-concepts">
+        <h2>Core Concepts</h2>
+        
+        <h3>Namespace Structure</h3>
+        <p>MiniQ is organized with the following structure:</p>
+        <ul>
+            <li><code>MQ()</code> or <code>MiniQ()</code> - Main selector function (alias to <code>MiniQ.init</code>)</li>
+            <li><code>MQ.fn</code> - Access to the full MiniQ namespace</li>
+            <li><code>MQ.fn.Collection</code> - The constructor for element collections</li>
+            <li><code>MQ.utils</code> - Utility functions</li>
+        </ul>
+        
+        <h3>Collection Pattern</h3>
+        <p>MiniQ uses a collection pattern to manage DOM elements. All element methods operate on every element in the collection and return the collection for chaining.</p>
+        
+        <div class="note">
+            <strong>Note:</strong> Most methods in MiniQ return the collection object, allowing you to chain multiple methods together for concise code.
+        </div>
+    </section>
+    
+    <section id="api-reference">
+        <h2>API Reference</h2>
+        
+        <section id="selectors">
+            <h3>Selectors</h3>
+            <p>Select elements using CSS selectors:</p>
+            
+            <pre><code class="language-javascript">// Select by CSS selector
+MQ('.my-class');
+MQ('#my-id');
+MQ('div.container');
+
+// Create a collection from a DOM element
+MQ(document.getElementById('myElement'));
+
+// Create a collection from an array of elements
+MQ([elem1, elem2, elem3]);</code></pre>
+        </section>
+        
+        <section id="dom-manipulation">
+            <h3>DOM Manipulation</h3>
+            
+            <h4>Classes</h4>
+            <table>
+                <tr>
+                    <th>Method</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td><code>addClass(className)</code></td>
+                    <td>Adds a class to all elements in the collection</td>
+                </tr>
+                <tr>
+                    <td><code>removeClass(className)</code></td>
+                    <td>Removes a class from all elements in the collection</td>
+                </tr>
+                <tr>
+                    <td><code>toggleClass(className)</code></td>
+                    <td>Toggles a class on all elements in the collection</td>
+                </tr>
+                <tr>
+                    <td><code>hasClass(className)</code></td>
+                    <td>Returns true if any element in the collection has the class</td>
+                </tr>
+            </table>
+            
+            <pre><code class="language-javascript">// Add, remove, toggle, or check for classes
+MQ('.box').addClass('active');
+MQ('.box').removeClass('active');
+MQ('.box').toggleClass('active');
+const hasClass = MQ('.box').hasClass('active'); // returns boolean</code></pre>
+            
+            <h4>Styles</h4>
+            <table>
+                <tr>
+                    <th>Method</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td><code>css(property)</code></td>
+                    <td>Gets the computed style value for the first element</td>
+                </tr>
+                <tr>
+                    <td><code>css(property, value)</code></td>
+                    <td>Sets a style property on all elements</td>
+                </tr>
+                <tr>
+                    <td><code>css(propertiesObject)</code></td>
+                    <td>Sets multiple style properties on all elements</td>
+                </tr>
+            </table>
+            
+            <pre><code class="language-javascript">// Get computed style
+const color = MQ('#element').css('color');
+
+// Set a single style
+MQ('#element').css('color', 'blue');
+
+// Set multiple styles
+MQ('#element').css({
+  'color': 'blue',
+  'background-color': '#eee',
+  'padding': '10px'
+});</code></pre>
+            
+            <h4>Content</h4>
+            <table>
+                <tr>
+                    <th>Method</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td><code>html()</code></td>
+                    <td>Gets the HTML content of the first element</td>
+                </tr>
+                <tr>
+                    <td><code>html(content)</code></td>
+                    <td>Sets the HTML content of all elements</td>
+                </tr>
+                <tr>
+                    <td><code>text()</code></td>
+                    <td>Gets the text content of the first element</td>
+                </tr>
+                <tr>
+                    <td><code>text(content)</code></td>
+                    <td>Sets the text content of all elements</td>
+                </tr>
+            </table>
+            
+            <pre><code>// Get HTML content
+const html = MQ('#element').html();
+
+// Set HTML content
+MQ('#element').html('&lt;strong&gt;New content&lt;/strong&gt;');
+
+// Get text content
+const text = MQ('#element').text();
+
+// Set text content
+MQ('#element').text('New text');</code></pre>
+            
+            <h4>Attributes</h4>
+            <table>
+                <tr>
+                    <th>Method</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td><code>attr(name)</code></td>
+                    <td>Gets an attribute value from the first element</td>
+                </tr>
+                <tr>
+                    <td><code>attr(name, value)</code></td>
+                    <td>Sets an attribute on all elements</td>
+                </tr>
+                <tr>
+                    <td><code>attr(attributesObject)</code></td>
+                    <td>Sets multiple attributes on all elements</td>
+                </tr>
+                <tr>
+                    <td><code>removeAttr(name)</code></td>
+                    <td>Removes an attribute from all elements</td>
+                </tr>
+            </table>
+            
+            <pre><code>// Get attribute
+const href = MQ('a').attr('href');
+
+// Set attribute
+MQ('a').attr('href', 'https://example.com');
+
+// Set multiple attributes
+MQ('a').attr({
+  'href': 'https://example.com',
+  'target': '_blank',
+  'rel': 'noopener'
+});
+
+// Remove attribute
+MQ('a').removeAttr('target');</code></pre>
+            
+            <h4>Visibility</h4>
+            <table>
+                <tr>
+                    <th>Method</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td><code>show()</code></td>
+                    <td>Shows all elements (sets display to 'block')</td>
+                </tr>
+                <tr>
+                    <td><code>hide()</code></td>
+                    <td>Hides all elements (sets display to 'none')</td>
+                </tr>
+                <tr>
+                    <td><code>toggle()</code></td>
+                    <td>Toggles visibility of all elements</td>
+                </tr>
+            </table>
+            
+            <pre><code>// Show elements
+MQ('.box').show();
+
+// Hide elements
+MQ('.box').hide();
+
+// Toggle visibility
+MQ('.box').toggle();</code></pre>
+            
+            <h4>Collection Utilities</h4>
+            <table>
+                <tr>
+                    <th>Method</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td><code>each(callback)</code></td>
+                    <td>Executes a function for each element in the collection</td>
+                </tr>
+                <tr>
+                    <td><code>size()</code></td>
+                    <td>Returns the number of elements in the collection</td>
+                </tr>
+                <tr>
+                    <td><code>get(index)</code></td>
+                    <td>Returns the element at the specified index</td>
+                </tr>
+                <tr>
+                    <td><code>toArray()</code></td>
+                    <td>Converts the collection to a regular array</td>
+                </tr>
+            </table>
+            
+            <pre><code>// Get collection size
+const count = MQ('div').size();
+
+// Get a specific element
+const secondDiv = MQ('div').get(1);
+
+// Convert to array
+const divArray = MQ('div').toArray();
+
+// Iterate over elements
+MQ('div').each(function(el, index) {
+  console.log(index, el);
+});</code></pre>
+        </section>
+        
+        <section id="event-handling">
+            <h3>Event Handling</h3>
+            <table>
+                <tr>
+                    <th>Method</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td><code>on(event, callback)</code></td>
+                    <td>Adds an event listener to all elements</td>
+                </tr>
+                <tr>
+                    <td><code>off(event, [callback])</code></td>
+                    <td>Removes event listener(s) from all elements</td>
+                </tr>
+                <tr>
+                    <td><code>click(callback)</code></td>
+                    <td>Adds a click event listener to all elements</td>
+                </tr>
+                <tr>
+                    <td><code>click()</code></td>
+                    <td>Triggers a click event on all elements</td>
+                </tr>
+            </table>
+            
+            <pre><code>// Add event listener
+MQ('#button').on('click', function(e) {
+  console.log('Button clicked!');
+});
+
+// Remove event listener
+MQ('#button').off('click', handlerFunction);
+
+// Remove all listeners for an event
+MQ('#button').off('click');
+
+// Click shorthand
+MQ('#button').click(function() {
+  console.log('Button clicked!');
+});
+
+// Trigger click event
+MQ('#button').click();</code></pre>
+        </section>
+        
+        <section id="dom-traversal">
+            <h3>DOM Traversal</h3>
+            <table>
+                <tr>
+                    <th>Method</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td><code>find(selector)</code></td>
+                    <td>Finds elements matching the selector within the current elements</td>
+                </tr>
+                <tr>
+                    <td><code>parent()</code></td>
+                    <td>Gets the parent elements of the current elements</td>
+                </tr>
+                <tr>
+                    <td><code>children()</code></td>
+                    <td>Gets the child elements of the current elements</td>
+                </tr>
+            </table>
+            
+            <pre><code>// Find descendants
+MQ('.container').find('p');
+
+// Get parent elements
+MQ('p').parent();
+
+// Get child elements
+MQ('.container').children();</code></pre>
+        </section>
+        
+        <section id="ajax">
+            <h3>AJAX</h3>
+            <table>
+                <tr>
+                    <th>Method</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td><code>MQ.ajax(options)</code></td>
+                    <td>Performs an AJAX request with the specified options</td>
+                </tr>
+                <tr>
+                    <td><code>MQ.get(url, success)</code></td>
+                    <td>Performs a GET request</td>
+                </tr>
+                <tr>
+                    <td><code>MQ.post(url, data, success)</code></td>
+                    <td>Performs a POST request</td>
+                </tr>
+            </table>
+            
+            <pre><code class="language-javascript">// GET request
+MQ.get('https://api.example.com/data', function(response) {
+  console.log(response);
+});
+
+// POST request
+MQ.post('https://api.example.com/data', 
+  { name: 'John', age: 30 },
+  function(response) {
+    console.log(response);
+  }
+);
+
+// Advanced AJAX options
+MQ.ajax({
+  method: 'POST',
+  url: 'https://api.example.com/data',
+  data: JSON.stringify({ name: 'John', age: 30 }),
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  success: function(response) {
+    console.log('Success:', response);
+  },
+  error: function(xhr, status) {
+    console.error('Error:', status);
+  },
+  complete: function() {
+    console.log('Request completed');
+  }
+});</code></pre>
+        </section>
+    </section>
+    
+    <section id="extending">
+        <h2>Extending MiniQ</h2>
+        <p>You can extend MiniQ with custom methods:</p>
+        
+        <pre><code class="language-javascript">// Add a new method to all MiniQ collections
+MQ.fn.Collection.prototype.highlight = function(color) {
+  return this.each(function(el) {
+    const originalColor = MQ(el).css('background-color');
+    
+    // Store original color
+    el._originalBgColor = originalColor;
+    
+    // Set highlight color
+    MQ(el).css('background-color', color || '#ffff99');
+  });
+};
+
+// Add a method to unhighlight
+MQ.fn.Collection.prototype.unhighlight = function() {
+  return this.each(function(el) {
+    if (el._originalBgColor) {
+      MQ(el).css('background-color', el._originalBgColor);
+    }
+  });
+};
+
+// Usage
+MQ('p').highlight('#ffcc00');
+setTimeout(() => MQ('p').unhighlight(), 2000);</code></pre>
+    </section>
+    
+    <section id="examples">
+        <h2>Examples</h2>
+        
+        <h3>Basic DOM Manipulation</h3>
+        <div class="example-container">
+            <pre><code>// Select all paragraphs and add a class
+MQ('p').addClass('enhanced-text');
+
+// Change styles on all list items
+MQ('li').css({
+  'color': '#333',
+  'padding': '5px',
+  'border-bottom': '1px solid #eee'
+});
+
+// Update content for a specific element
+MQ('#status-message').html('&lt;strong&gt;Updated!&lt;/strong&gt;');</code></pre>
+        </div>
+        
+        <h3>Event Handling</h3>
+        <div class="example-container">
+            <pre><code>// Add click handler to buttons
+MQ('.action-btn').on('click', function() {
+  // 'this' refers to the clicked element
+  MQ(this).addClass('clicked');
+  
+  // Find related content
+  const contentId = MQ(this).attr('data-content-id');
+  MQ('#' + contentId).show();
+});
+
+// Form submission
+MQ('#contact-form').on('submit', function(e) {
+  e.preventDefault();
+  
+  // Get form data and send
+  const name = MQ('#name-input').val();
+  const email = MQ('#email-input').val();
+  
+  MQ.post('/submit-contact', { name, email }, function(response) {
+    MQ('#form-result').html('Thank you for your submission!');
+  });
+});</code></pre>
+        </div>
+        
+        <h3>Complete Example: Tabbed Interface</h3>
+        <div class="example-container">
+            <pre><code>// Simple tabs implementation
+function initTabs() {
+  // Hide all tab content initially except the first
+  MQ('.tab-content').hide();
+  MQ('.tab-content').get(0) && MQ(MQ('.tab-content').get(0)).show();
+  
+  // Mark first tab as active
+  MQ('.tab').get(0) && MQ(MQ('.tab').get(0)).addClass('active');
+  
+  // Handle tab clicks
+  MQ('.tab').on('click', function() {
+    // Remove active class from all tabs
+    MQ('.tab').removeClass('active');
+    
+    // Add active class to clicked tab
+    MQ(this).addClass('active');
+    
+    // Hide all tab content
+    MQ('.tab-content').hide();
+    
+    // Show the associated tab content
+    const tabId = MQ(this).attr('data-tab-id');
+    MQ('#' + tabId).show();
+  });
+}
+
+// Initialize tabs when DOM is ready
+initTabs();</code></pre>
+        </div>
+        
+        <h3>Live Demo</h3>
+        <p>Here's a complete example that demonstrates MiniQ in action:</p>
+        
+        <div class="note">
+            <strong>Note:</strong> Copy and paste this HTML file to create a working demo that showcases the main features of the MiniQ library.
+        </div>
+        
+        <pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;MiniQ Demo&lt;/title&gt;
+    &lt;style&gt;
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+        }
+        .box {
+            border: 1px solid #ccc;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+        }
+        .highlight {
+            background-color: #ffffcc;
+            border-color: #ffcc00;
+        }
+        button {
+            padding: 8px 12px;
+            margin-right: 8px;
+            cursor: pointer;
+        }
+        .results {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #eee;
+            min-height: 100px;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class="container"&gt;
+        &lt;h1&gt;MiniQ Demo&lt;/h1&gt;
+        
+        &lt;div class="box" id="box1"&gt;
+            &lt;h3&gt;Box 1&lt;/h3&gt;
+            &lt;p&gt;This is a test box.&lt;/p&gt;
+            &lt;button class="toggle-btn"&gt;Toggle Highlight&lt;/button&gt;
+        &lt;/div&gt;
+        
+        &lt;div class="box" id="box2"&gt;
+            &lt;h3&gt;Box 2&lt;/h3&gt;
+            &lt;p&gt;Another box with &lt;span class="special"&gt;special content&lt;/span&gt;.&lt;/p&gt;
+            &lt;button class="toggle-btn"&gt;Toggle Highlight&lt;/button&gt;
+        &lt;/div&gt;
+        
+        &lt;div class="controls"&gt;
+            &lt;button id="show-all"&gt;Show All&lt;/button&gt;
+            &lt;button id="hide-all"&gt;Hide All&lt;/button&gt;
+            &lt;button id="fetch-data"&gt;Fetch Data&lt;/button&gt;
+        &lt;/div&gt;
+        
+        &lt;div class="results" id="results"&gt;
+            &lt;p&gt;Results will appear here...&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Include MiniQ library --&gt;
+    &lt;script src="miniq.js"&gt;&lt;/script&gt;
+    
+    &lt;!-- Demo script --&gt;
+    &lt;script&gt;
+        // Basic selection and chaining
+        MQ('.box')
+            .css({
+                'transition': 'all 0.3s ease',
+                'box-shadow': '0 2px 5px rgba(0,0,0,0.1)'
+            })
+            .on('mouseenter', function() {
+                MQ(this).css('box-shadow', '0 5px 15px rgba(0,0,0,0.2)');
+            })
+            .on('mouseleave', function() {
+                MQ(this).css('box-shadow', '0 2px 5px rgba(0,0,0,0.1)');
+            });
+        
+        // Event handling with toggle class
+        MQ('.toggle-btn').on('click', function() {
+            MQ(this).parent().toggleClass('highlight');
+        });
+        
+        // Finding elements within other elements
+        MQ('#box2').find('.special').css('font-weight', 'bold');
+        
+        // Show/hide functionality
+        MQ('#show-all').click(function() {
+            MQ('.box').show();
+            updateResults('All boxes are now visible');
+        });
+        
+        MQ('#hide-all').click(function() {
+            MQ('.box').hide();
+            updateResults('All boxes are now hidden');
+        });
+        
+        // AJAX functionality
+        MQ('#fetch-data').click(function() {
+            updateResults('Fetching data...');
+            
+            // Mock API URL
+            MQ.get('https://jsonplaceholder.typicode.com/todos/1', function(data) {
+                let html = '&lt;h4&gt;Data Retrieved:&lt;/h4&gt;';
+                html += '&lt;pre&gt;' + JSON.stringify(data, null, 2) + '&lt;/pre&gt;';
+                
+                MQ('#results').html(html);
+            });
+        });
+        
+        // Helper function to update results
+        function updateResults(message) {
+            MQ('#results').html('&lt;p&gt;' + message + '&lt;/p&gt;');
+        }
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+    </section>
+    
+    <footer>
+        <p>MiniQ Library Documentation - Version 1.0.0</p>
+        <p><small>&copy; 2025 - MiniQ</small></p>
+    </footer>
+    
+    <!-- Prism JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+</body>
+</html>

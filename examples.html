@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MiniQ Example</title>
+    <script src="./miniq.js"></script>
+    <style>
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+        }
+        .box {
+            border: 1px solid #ccc;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+        }
+        .highlight {
+            background-color: #ffffcc;
+            border-color: #ffcc00;
+        }
+        .hidden {
+            display: none;
+        }
+        button {
+            padding: 8px 12px;
+            margin-right: 8px;
+            cursor: pointer;
+        }
+        .results {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #eee;
+            min-height: 100px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>MiniQ Library Demo</h1>
+        
+        <div class="box" id="box1">
+            <h3>Box 1</h3>
+            <p>This is a simple test box to demonstrate MiniQ functionality.</p>
+            <button class="toggle-btn">Toggle Highlight</button>
+        </div>
+        
+        <div class="box" id="box2">
+            <h3>Box 2</h3>
+            <p>Another box with <span class="special">special content</span> inside.</p>
+            <button class="toggle-btn">Toggle Highlight</button>
+        </div>
+        
+        <div class="controls">
+            <button id="show-all">Show All</button>
+            <button id="hide-all">Hide All</button>
+            <button id="fetch-data">Fetch Data</button>
+        </div>
+        
+        <div class="results" id="results">
+            <p>Results will appear here...</p>
+        </div>
+    </div>
+
+    <!-- Include MiniQ library -->
+    <script src="miniq.js"></script>
+    
+    <!-- Demo script -->
+    <script>
+        // Wait for DOM to be fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            // Example 1: Basic selection and chaining
+            MQ('.box')
+                .css({
+                    'transition': 'all 0.3s ease',
+                    'box-shadow': '0 2px 5px rgba(0,0,0,0.1)'
+                })
+                .on('mouseenter', function() {
+                    MQ(this).css('box-shadow', '0 5px 15px rgba(0,0,0,0.2)');
+                })
+                .on('mouseleave', function() {
+                    MQ(this).css('box-shadow', '0 2px 5px rgba(0,0,0,0.1)');
+                });
+            
+            // Example 2: Event handling with toggle class
+            MQ('.toggle-btn').on('click', function() {
+                MQ(this).parent().toggleClass('highlight');
+            });
+            
+            // Example 3: Finding elements within other elements
+            MQ('#box2').find('.special').css('font-weight', 'bold');
+            
+            // Example 4: Show/hide functionality
+            MQ('#show-all').click(function() {
+                MQ('.box').show();
+                updateResults('All boxes are now visible');
+            });
+            
+            MQ('#hide-all').click(function() {
+                MQ('.box').hide();
+                updateResults('All boxes are now hidden');
+            });
+            
+            // Example 5: AJAX functionality
+            MQ('#fetch-data').click(function() {
+                updateResults('Fetching data...');
+                
+                // Mock API URL (use a real API in production)
+                MQ.get('https://jsonplaceholder.typicode.com/todos/1', function(data) {
+                    // Format and display the results
+                    let html = '<h4>Data Retrieved:</h4>';
+                    html += '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
+                    
+                    MQ('#results').html(html);
+                });
+            });
+            
+            // Helper function to update results
+            function updateResults(message) {
+                MQ('#results').html('<p>' + message + '</p>');
+            }
+            
+            // Example 6: Extending MiniQ with a custom method
+            // Add a pulse animation method to MiniQ
+            MQ.fn.Collection.prototype.pulse = function(times = 3) {
+                return this.each(function(el) {
+                    let count = 0;
+                    const pulse = () => {
+                        MQ(el)
+                            .css('transform', 'scale(1.05)')
+                            .css('opacity', '0.8');
+                        
+                        setTimeout(() => {
+                            MQ(el)
+                                .css('transform', 'scale(1)')
+                                .css('opacity', '1');
+                            
+                            count++;
+                            if (count < times) {
+                                setTimeout(pulse, 300);
+                            }
+                        }, 300);
+                    };
+                    
+                    pulse();
+                });
+            };
+            
+            // Demo the custom pulse method
+            MQ('#box1').pulse();
+        });
+    </script>
+</body>
+</html>
